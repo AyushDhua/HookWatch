@@ -1,0 +1,14 @@
+{
+  "name": "hookwatch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lightweight webhook inspection and debugging tool",
+  "scripts": {
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "typecheck:client": "npm run typecheck --prefix client 2>/dev/null || npx --prefix client tsc --noEmit",
+    "typecheck:server": "npm run typecheck --prefix server"
+  }
+}

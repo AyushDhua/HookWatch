@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { healthRouter } from './routes/health';
 import { authRouter } from './routes/auth';
+import { endpointsRouter } from './routes/endpoints';
 import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
 
@@ -16,6 +17,8 @@ app.use(requestLogger);
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use('/api', healthRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/endpoints', endpointsRouter);
+
 
 
 // ─── 404 handler ─────────────────────────────────────────────────────────────

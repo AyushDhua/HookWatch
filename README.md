@@ -156,7 +156,151 @@ curl -X POST http://localhost:5000/h/YOUR_TOKEN \
 
 ## Live Demo
 
-[https://hookwatch.onrender.com](https://hookwatch.onrender.com)
+[🌐 ⁠Try HookWatch Live](https://hookwatch.onrender.com)
+
+### Demo Credentials
+Use these credentials to log in and inspect the dashboard immediately without registering a new account:
+* **Email**: `demo@hookwatch.dev`
+* **Password**: `password123`
+
+## Production Testing
+
+You can test the deployed webhook receiver directly from your terminal using the following copy-pasteable `curl` commands.
+
+> [!IMPORTANT]
+> First define the `WEBHOOK_URL` variable in your terminal, replacing `YOUR_PUBLIC_TOKEN` with a webhook token generated from your HookWatch dashboard:
+> ```bash
+> WEBHOOK_URL="https://hookwatch-api.onrender.com/h/YOUR_PUBLIC_TOKEN"
+> ```
+
+---
+
+### Test 1 — GET + Query Parameters
+**Purpose**: Verify that HookWatch accepts GET requests and correctly captures URL query parameters.
+
+**Command**:
+```bash
+curl -i -G "$WEBHOOK_URL" \
+  --data-urlencode "source=terminal" \
+  --data-urlencode "test=123" \
+  --data-urlencode "environment=production"
+```
+
+**Expected Response**:
+`HTTP/1.1 200 OK`
+```json
+{"received":true}
+```
+
+**Verification inside Event History**:
+* **Method**: `GET`
+* **Status**: `200`
+* **Query Parameters**:
+  * `source`: `terminal`
+  * `test`: `123`
+  * `environment`: `production`
+
+---
+
+### Test 2 — POST + JSON Body
+**Purpose**: Verify JSON payload capture, content-type headers, and custom headers.
+
+**Command**:
+```bash
+curl -i -X POST "$WEBHOOK_URL" \
+  -H "Content-Type: application/json" \
+  -H "X-Test-Source: terminal" \
+  -d '{
+    "event": "production-test",
+    "message": "Hello HookWatch",
+    "value": 123,
+    "source": "curl"
+  }'
+```
+
+**Expected Response**:
+`HTTP/1.1 200 OK`
+```json
+{"received":true}
+```
+
+**Verification inside Event History**:
+* **Method**: `POST`
+* **Status**: `200`
+* **Headers**: `Content-Type: application/json`, `X-Test-Source: terminal`
+* **Body**: JSON object matching the input payload
+
+---
+
+### Test 3 — PUT + Custom Headers + JSON
+**Purpose**: Verify that the public receiver supports HTTP methods other than POST and captures custom headers.
+
+**Command**:
+```bash
+curl -i -X PUT "$WEBHOOK_URL" \
+  -H "Content-Type: application/json" \
+  -H "X-Test-Method: PUT" \
+  -H "X-Client: HookWatch-Terminal" \
+  -d '{
+    "event": "put-test",
+    "operation": "update",
+    "value": 456
+  }'
+```
+
+**Expected Response**:
+`HTTP/1.1 200 OK`
+```json
+{"received":true}
+```
+
+**Verification inside Event History**:
+* **Method**: `PUT`
+* **Status**: `200`
+* **Headers**: `X-Test-Method: PUT`, `X-Client: HookWatch-Terminal`
+* **Body**: JSON object matching the input payload
+
+---
+
+### Test 4 — PATCH + Plain Text Body
+**Purpose**: Verify support for non-JSON/text payloads.
+
+**Command**:
+```bash
+curl -i -X PATCH "$WEBHOOK_URL" \
+  -H "Content-Type: text/plain" \
+  -H "X-Test-Type: plain-text" \
+  --data 'Hello from HookWatch production testing'
+```
+
+**Expected Response**:
+`HTTP/1.1 200 OK`
+```json
+{"received":true}
+```
+
+**Verification inside Event History**:
+* **Method**: `PATCH`
+* **Status**: `200`
+* **Headers**: `Content-Type: text/plain`, `X-Test-Type: plain-text`
+* **Body**: `Hello from HookWatch production testing`
+
+---
+
+### Test 5 — Invalid Webhook Token (Security Test)
+**Purpose**: Verify that nonexistent public webhook tokens are rejected.
+
+**Command**:
+```bash
+curl -i "https://hookwatch-api.onrender.com/h/THIS_TOKEN_DOES_NOT_EXIST"
+```
+
+**Expected Response**:
+`HTTP/1.1 404 Not Found`
+```json
+{"error":"Webhook endpoint not found"}
+```
+*(This confirms HookWatch rejects arbitrary or unauthorized webhook tokens).*
 
 ---
 

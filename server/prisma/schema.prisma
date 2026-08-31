@@ -1,0 +1,53 @@
+// Why this schema is structured this way:
+// - Three models only: exactly what HookWatch needs (User, Endpoint, WebhookEvent)
+// - cuid() for IDs: URL-safe, non-sequential (unlike auto-increment integers)
+// - Json type for headers/queryParams/body: webhook payloads have no fixed shape
+// - Cascade deletes: deleting an endpoint removes its events; deleting a user
+//   removes their endpoints (which then cascades to events)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  endpoints    Endpoint[]
+}
+
+model Endpoint {
+  id          String         @id @default(cuid())
+  userId      String
+  name        String
+  publicToken String         @unique
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events      WebhookEvent[]
+
+  @@index([userId])
+}
+
+model WebhookEvent {
+  id          String   @id @default(cuid())
+  endpointId  String
+  method      String
+  headers     Json
+  queryParams Json
+  body        Json?
+  sourceIp    String
+  statusCode  Int
+  receivedAt  DateTime @default(now())
+  endpoint    Endpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+
+  @@index([endpointId])
+  @@index([receivedAt])
+}

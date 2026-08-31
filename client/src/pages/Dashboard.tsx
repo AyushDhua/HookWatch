@@ -66,10 +66,9 @@ export const Dashboard: React.FC = () => {
   });
 
   const getWebhookUrl = (publicToken: string) => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return `http://localhost:5000/h/${publicToken}`;
-    }
-    return `${window.location.origin}/h/${publicToken}`;
+    const base = import.meta.env.VITE_WEBHOOK_BASE_URL || window.location.origin;
+    const cleanBase = base.endsWith('/') ? base.slice(0, -1) : base;
+    return `${cleanBase}/h/${publicToken}`;
   };
 
   const handleCopy = async (token: string, endpointId: string) => {

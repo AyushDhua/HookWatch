@@ -139,7 +139,7 @@ export const Dashboard: React.FC = () => {
           {!isCreating && (
             <button
               onClick={() => setIsCreating(true)}
-              className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow hover:bg-zinc-855 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
               Create Endpoint
             </button>
@@ -282,7 +282,7 @@ export const Dashboard: React.FC = () => {
                     <h3 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
                       {endpoint.name}
                     </h3>
-                    <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-455">
+                    <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400">
                       Active
                     </span>
                   </div>
@@ -294,7 +294,7 @@ export const Dashboard: React.FC = () => {
                         type="text"
                         readOnly
                         value={getWebhookUrl(endpoint.publicToken)}
-                        className="flex-1 block w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-450"
+                        className="flex-1 block w-full rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs text-zinc-600 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400"
                       />
                       <button
                         onClick={() => handleCopy(endpoint.publicToken, endpoint.id)}
@@ -319,7 +319,7 @@ export const Dashboard: React.FC = () => {
                   </button>
                   <button
                     onClick={() => setDeletingId(endpoint.id)}
-                    className="text-xs text-red-655 hover:text-red-500 font-medium"
+                    className="text-xs text-red-600 hover:text-red-500 font-medium"
                   >
                     Delete
                   </button>

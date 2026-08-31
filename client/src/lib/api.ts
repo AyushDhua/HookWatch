@@ -23,7 +23,9 @@ export async function apiRequest<T = any>(
     headers.set('Content-Type', 'application/json');
   }
 
-  const response = await fetch(path, {
+  const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '');
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
   });

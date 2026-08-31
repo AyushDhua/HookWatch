@@ -5,6 +5,7 @@ import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
+import { EventHistory } from './pages/EventHistory';
 
 // Initialize React Query client
 const queryClient = new QueryClient({
@@ -46,6 +47,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/endpoints/:id/events"
+              element={
+                <ProtectedRoute>
+                  <EventHistory />
                 </ProtectedRoute>
               }
             />

@@ -1,8 +1,7 @@
 import 'dotenv/config';
+import { env } from './lib/env';
 import app from './app';
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
-
-app.listen(PORT, () => {
-  console.log(`HookWatch server running on http://localhost:${PORT}`);
+app.listen(env.port, () => {
+  console.log(`HookWatch server running on http://localhost:${env.port}`);
 });

@@ -23,28 +23,26 @@ export const getEventsQuerySchema = z.object({
   page: z
     .string()
     .optional()
-    .transform((val) => {
-      const parsed = val ? parseInt(val, 10) : 1;
-      return isNaN(parsed) || parsed < 1 ? 1 : parsed;
-    }),
+    .refine((val) => val === undefined || (/^\d+$/.test(val) && parseInt(val, 10) >= 1), {
+      message: 'Page must be a positive integer',
+    })
+    .transform((val) => (val ? parseInt(val, 10) : 1)),
   limit: z
     .string()
     .optional()
-    .transform((val) => {
-      const parsed = val ? parseInt(val, 10) : 20;
-      if (isNaN(parsed) || parsed < 1) return 20;
-      return Math.min(100, parsed);
-    }),
+    .refine((val) => val === undefined || (/^\d+$/.test(val) && parseInt(val, 10) >= 1 && parseInt(val, 10) <= 100), {
+      message: 'Limit must be a positive integer between 1 and 100',
+    })
+    .transform((val) => (val ? parseInt(val, 10) : 20)),
   search: z.string().optional(),
   method: z.string().optional(),
   status: z
     .string()
     .optional()
-    .transform((val) => {
-      if (!val) return undefined;
-      const parsed = parseInt(val, 10);
-      return isNaN(parsed) ? undefined : parsed;
-    }),
+    .refine((val) => val === undefined || /^\d+$/.test(val), {
+      message: 'Status must be a valid integer',
+    })
+    .transform((val) => (val ? parseInt(val, 10) : undefined)),
 });
 
 

@@ -1,6 +1,24 @@
 # HookWatch
 
+🚀 **[Try HookWatch Live](https://hookwatch.onrender.com)**
+
 HookWatch is a lightweight webhook inspection and debugging tool for developers. Create a unique public webhook URL, send requests to it from any service or tool, and inspect every captured request — headers, query parameters, body, method, and source IP — in a clean web dashboard.
+
+---
+
+## Screenshots
+
+### Dashboard — create and manage webhook endpoints
+![Dashboard](screenshots/dashboard.png)
+
+### Endpoint creation — generate a unique public webhook URL
+![Endpoint Creation](screenshots/create_endpoint.png)
+
+### Request history — search and filter captured webhook requests
+![Request History](screenshots/event_history.png)
+
+### Request inspector — inspect headers, query parameters, metadata, and JSON payloads
+![Request Inspector](screenshots/request_inspector.png)
 
 ---
 

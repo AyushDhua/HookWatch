@@ -3,6 +3,7 @@ import cors from 'cors';
 import { healthRouter } from './routes/health';
 import { authRouter } from './routes/auth';
 import { endpointsRouter } from './routes/endpoints';
+import { eventsRouter } from './routes/events';
 import { webhookRouter } from './routes/webhook';
 import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
@@ -19,6 +20,7 @@ app.use(requestLogger);
 app.use('/api', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/endpoints', endpointsRouter);
+app.use('/api/events', eventsRouter);
 // Public webhook receiver — no JWT, the token in the URL identifies the endpoint
 app.use('/h', webhookRouter);
 
